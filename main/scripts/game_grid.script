@@ -1,0 +1,83 @@
+function init(self)
+	-- Add initialization code here
+	-- Learn more: https://defold.com/manuals/script/
+	-- Remove this function if not needed
+
+	msg.post(".", "acquire_input_focus")
+end
+
+cards = {{},{},{}}
+
+function generate()
+	for x = 0, 2, 1
+	do
+		for y = 0, 2, 1
+		do
+
+			local inst = collectionfactory.create("#collectionfactory")
+			pprint(inst)
+			print("ID:")
+			pprint(inst)
+			local hh = inst["/go"]
+
+			-- cards[3 * x + y + 1] = hh
+
+			cards[x + 1][y + 1] = hh
+
+			local pos = go.get_position(".")
+			go.set_position(vmath.vector3(pos.x + x * 98 ,pos.y + y * 128,0), hh)
+		end
+	end
+
+	pprint(cards)
+end
+
+function on_message(self, message_id, message, sender)
+	if message_id == hash("generate") then
+		generate()
+	end
+	if message_id == hash("handle_swipe") then
+		print("Received swipe" .. message[1])
+		local c = get_card(sender.path)
+		print(c)
+		pprint(get_card(sender))
+		pprint(sender)
+
+		local l = get_line(c.x, c.y, message[1])
+		for i, element in ipairs(l) do
+			if element ~= nil then 
+				go.delete(element)
+			end
+		end
+	end
+end
+
+function get_line(x, y, line)
+	local ret = {}
+	if line == "horizontal" then
+		for i = 1, 3, 1 do
+			table.insert(ret, cards[i][y])
+		end
+	else
+		for i = 1, 3, 1 do
+			table.insert(ret, cards[x][i])
+		end
+	end
+	return ret
+end
+
+function get_card(url)
+	for x = 1, 3, 1 do
+		for y = 1, 3, 1 do
+			if cards[x][y] == url then	
+				return {card = cards[x][y], x = x, y = y}
+			end
+		end
+	end
+end
+
+function on_input(self, action_id, action)
+	if action_id == hash("touch") and action.pressed then
+		
+	end
+end
