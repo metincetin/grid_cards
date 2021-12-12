@@ -1,0 +1,14 @@
+[
+    {
+        "name": "Player",
+        "health":10,
+        "damage": 10,
+        "image":"logo_256"
+    },
+    {
+        "name": "Invoker",
+        "health":3,
+        "damage": 5,
+        "image":"logo_blue_256"
+    }
+]

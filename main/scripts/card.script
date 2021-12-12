@@ -1,10 +1,10 @@
-local pick = require "main/pick"
+local pick = require "modules.pick"
+local game_data = require "modules.game_data"
 
+function assign_card(self, c)
+	self.card = c
 
-function assign_card(c)
-	card = c
-
-	update_visuals()
+	update_visuals(self)
 end
 
 function init(self)
@@ -13,18 +13,16 @@ function init(self)
 	-- Remove this function if not needed
 
 	msg.post(".", "acquire_input_focus")
-		
-	assign_card({
-		name = "Destroyer",
-		health = 4
-	})
+	self.card = {}
+	assign_card(self,game_data.get_card_by_name("Invoker"))
 end
 
-card = {}
+local card = {}
 
-function update_visuals()
-	label.set_text("#name", card.name)
-	msg.post("heart#health_display", "update_label", {card})
+function update_visuals(self)
+	label.set_text("#name", self.card.name)
+	msg.post("#character_image", "play_animation", {id = hash(self.card.image)})
+	msg.post("heart#health_display", "update_label", {self.card})
 end
 
 selected = 0

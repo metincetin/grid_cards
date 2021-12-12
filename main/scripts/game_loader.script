@@ -1,0 +1,9 @@
+local game_data = require "modules.game_data"
+function init(self)
+	-- Add initialization code here
+	-- Learn more: https://defold.com/manuals/script/
+	-- Remove this function if not needed
+	print("Loading cards")
+	game_data.load_cards()
+	print("Cards loaded, number = " .. table.getn(game_data.cards))
+end

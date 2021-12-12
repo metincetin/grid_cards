@@ -15,9 +15,7 @@ function generate()
 		do
 
 			local inst = collectionfactory.create("#collectionfactory")
-			pprint(inst)
-			print("ID:")
-			pprint(inst)
+			
 			local hh = inst["/go"]
 
 			-- cards[3 * x + y + 1] = hh
@@ -28,8 +26,6 @@ function generate()
 			go.set_position(vmath.vector3(pos.x + x * 98 ,pos.y + y * 128,0), hh)
 		end
 	end
-
-	pprint(cards)
 end
 
 function on_message(self, message_id, message, sender)
@@ -39,9 +35,7 @@ function on_message(self, message_id, message, sender)
 	if message_id == hash("handle_swipe") then
 		print("Received swipe" .. message[1])
 		local c = get_card(sender.path)
-		print(c)
-		pprint(get_card(sender))
-		pprint(sender)
+
 
 		local l = get_line(c.x, c.y, message[1])
 		for i, element in ipairs(l) do
