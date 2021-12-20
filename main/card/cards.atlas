@@ -1,9 +1,21 @@
 images {
-  image: "/builtins/assets/images/logo/logo_256.png"
+  image: "/assets/cards/characters/knight.png"
   sprite_trim_mode: SPRITE_TRIM_MODE_OFF
 }
 images {
-  image: "/builtins/assets/images/logo/logo_blue_256.png"
+  image: "/assets/cards/characters/invoker.png"
+  sprite_trim_mode: SPRITE_TRIM_MODE_OFF
+}
+images {
+  image: "/assets/cards/characters/goblin.png"
+  sprite_trim_mode: SPRITE_TRIM_MODE_OFF
+}
+images {
+  image: "/assets/cards/characters/orc_shaman.png"
+  sprite_trim_mode: SPRITE_TRIM_MODE_OFF
+}
+images {
+  image: "/assets/cards/characters/ogre.png"
   sprite_trim_mode: SPRITE_TRIM_MODE_OFF
 }
 margin: 0

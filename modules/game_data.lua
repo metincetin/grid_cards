@@ -15,5 +15,8 @@ function M.get_card_by_name(value)
 		end
 	end
 end
-
+function M.get_random_card()
+	local i = math.random(2, table.getn(M.cards))
+	return M.cards[i]
+end
 return M

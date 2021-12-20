@@ -1,8 +1,13 @@
 local pick = require "modules.pick"
 local game_data = require "modules.game_data"
 
+go.property("grid_position", vmath.vector3(0,0,0))
+go.property("damage", 0)
+
 function assign_card(self, c)
 	self.card = c
+	self.health = c.health
+	self.damage = c.damage
 
 	update_visuals(self)
 end
@@ -11,43 +16,79 @@ function init(self)
 	-- Add initialization code here
 	-- Learn more: https://defold.com/manuals/script/
 	-- Remove this function if not needed
-
+	self.health = 0
+	self.position = {x = 0, y = 0}
 	msg.post(".", "acquire_input_focus")
 	self.card = {}
-	assign_card(self,game_data.get_card_by_name("Invoker"))
 end
 
 local card = {}
 
 function update_visuals(self)
 	label.set_text("#name", self.card.name)
-	msg.post("#character_image", "play_animation", {id = hash(self.card.image)})
-	msg.post("heart#health_display", "update_label", {self.card})
+	msg.post("image#character_image", "play_animation", {id = hash(self.card.image)})
+	msg.post("heart#health_display", "update_label", {self.health})
+	label.set_text("damage#label", self.card.damage)
 end
 
 selected = 0
 
+function on_message(self, message_id, message, sender)
+	if message_id == hash("heal") then
+		self.health = self.health + message.value
+		update_visuals(self)
+	end
+	if message_id == hash("assign_card") then
+		assign_card(self,message)
+	end
+
+	if message_id == hash("apply_damage") then
+		apply_damage(self, message.attacker, message.damage, message.direction)
+	end
+	if message_id == hash("set_position") then
+		self.position = message
+	end
+end
+
+function apply_damage(self, attacker, damage, direction)
+	self.health = self.health - damage
+
+	go.animate("heart", "position.y", go.PLAYBACK_ONCE_PINGPONG, go.get("heart", "position.y") + 12, go.EASING_OUTCIRC, 0.3)
+	go.animate("heart", "scale", go.PLAYBACK_ONCE_PINGPONG, vmath.vector3(2), go.EASING_OUTCIRC, 0.3)
+
+	if self.health <= 0 then die(self, attacker, direction) end
+	
+	update_visuals(self)
+end
+
+function die(self, attacker, direction)
+	handle_behaviours(self, attacker)
+	go.animate(".", "scale", go.PLAYBACK_ONCE_FORWARD, 0, go.EASING_OUTCIRC, .7, .5, die_animation_completed)
+	msg.post("/game_grid", "card_died", {position = self.grid_position, direction = direction})
+end
+
+function handle_behaviours(self, attacker)
+	print("Attacker:")
+	pprint(attacker)
+	if self.card.behaviours == nil then return end
+	for i, v in ipairs(self.card.behaviours) do
+		print("Applying behaviour: " .. v.name .. " value: " .. v.value)
+		
+		if v.name == "heal" then
+			msg.post(msg.url("main", attacker,"card"), "heal", {value = v.value})
+		end
+	end
+end
+
+function die_animation_completed(self)
+	print("Removed!")
+end
+
 function on_input(self, action_id, action)
 	if action_id == hash("touch") then
-		if action.pressed then
-			if pick.pick_sprite("#background", action.x, action.y) then
-				print("Clicked " .. go.get_id())
-				selected = go.get_id()
-			end		
+		if action.pressed then	
 		end
-		if action.released and selected == go.get_id() then
-			local swipe_horizontal = math.abs(action.dx) > 10
-			local swipe_vertical = math.abs(action.dy) > 10
 
-			print(swipe_horizontal)
-			if swipe_horizontal then
-				msg.post("/game_grid", "handle_swipe", {"horizontal", (action.dx > 0 and 1 or -1)})
-			elseif swipe_vertical then
-				msg.post("/game_grid", "handle_swipe", {"vertical", (action.dy > 0 and 1 or -1)})
-			end
-
-			selected = ""
-		end
 	end
 	
 end

@@ -3,6 +3,6 @@ end
 
 function on_message(self, message_id, message)
 	if message_id == hash("update_label") then
-		label.set_text("#label", message[1].health)
+		label.set_text("#label", message[1])
 	end
 end
