@@ -3,6 +3,7 @@ scale_along_z: 0
 embedded_instances {
   id: "go"
   children: "damage"
+  children: "fx_container"
   children: "heart"
   children: "image"
   data: "components {\n"
@@ -333,6 +334,41 @@ embedded_instances {
   "    x: -20.0\n"
   "    y: -51.0\n"
   "    z: 1.0\n"
+  "  }\n"
+  "  rotation {\n"
+  "    x: 0.0\n"
+  "    y: 0.0\n"
+  "    z: 0.0\n"
+  "    w: 1.0\n"
+  "  }\n"
+  "}\n"
+  ""
+  position {
+    x: 0.0
+    y: 0.0
+    z: 0.0
+  }
+  rotation {
+    x: 0.0
+    y: 0.0
+    z: 0.0
+    w: 1.0
+  }
+  scale3 {
+    x: 1.0
+    y: 1.0
+    z: 1.0
+  }
+}
+embedded_instances {
+  id: "fx_container"
+  data: "components {\n"
+  "  id: \"heal\"\n"
+  "  component: \"/main/fx/heal.particlefx\"\n"
+  "  position {\n"
+  "    x: 214.0\n"
+  "    y: -53.0\n"
+  "    z: 10.0\n"
   "  }\n"
   "  rotation {\n"
   "    x: 0.0\n"

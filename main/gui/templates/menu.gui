@@ -1,11 +1,15 @@
-script: ""
+script: "/main/scripts/gui/menu.gui_script"
 fonts {
-  name: "system_font"
-  font: "/builtins/fonts/system_font.font"
+  name: "menu_title"
+  font: "/main/fonts/menu_title.font"
+}
+fonts {
+  name: "default_compass"
+  font: "/main/fonts/default_compass.font"
 }
 textures {
-  name: "cards"
-  texture: "/main/card/card_graphics.atlas"
+  name: "gui_textures"
+  texture: "/main/gui/gui_textures.atlas"
 }
 background_color {
   x: 0.0
@@ -15,8 +19,8 @@ background_color {
 }
 nodes {
   position {
-    x: 0.0
-    y: 0.0
+    x: 640.0
+    y: 310.0
     z: 0.0
     w: 1.0
   }
@@ -33,44 +37,44 @@ nodes {
     w: 1.0
   }
   size {
-    x: 101.0
-    y: 128.0
+    x: 1280.0
+    y: 1000.0
     z: 0.0
     w: 1.0
   }
   color {
-    x: 1.0
-    y: 1.0
-    z: 1.0
+    x: 0.7019608
+    y: 0.7019608
+    z: 0.7019608
     w: 1.0
   }
   type: TYPE_BOX
   blend_mode: BLEND_MODE_ALPHA
-  texture: "cards/card_gray"
+  texture: "gui_textures/white"
   id: "box"
-  xanchor: XANCHOR_NONE
-  yanchor: YANCHOR_NONE
+  xanchor: XANCHOR_LEFT
+  yanchor: YANCHOR_TOP
   pivot: PIVOT_CENTER
   adjust_mode: ADJUST_MODE_FIT
   layer: ""
   inherit_alpha: true
   slice9 {
-    x: 0.0
-    y: 0.0
-    z: 0.0
-    w: 0.0
+    x: 1.0
+    y: 1.0
+    z: 1.0
+    w: 1.0
   }
   clipping_mode: CLIPPING_MODE_NONE
   clipping_visible: true
   clipping_inverted: false
   alpha: 1.0
   template_node_child: false
-  size_mode: SIZE_MODE_AUTO
+  size_mode: SIZE_MODE_MANUAL
 }
 nodes {
   position {
-    x: -45.0
-    y: 60.0
+    x: 640.0
+    y: 425.0
     z: 0.0
     w: 1.0
   }
@@ -87,8 +91,8 @@ nodes {
     w: 1.0
   }
   size {
-    x: 88.0
-    y: 20.0
+    x: 350.0
+    y: 100.0
     z: 0.0
     w: 1.0
   }
@@ -100,13 +104,12 @@ nodes {
   }
   type: TYPE_TEXT
   blend_mode: BLEND_MODE_ALPHA
-  text: "Card Nameaua\n"
-  ""
-  font: "system_font"
-  id: "text"
+  text: "Grid Cards"
+  font: "menu_title"
+  id: "title"
   xanchor: XANCHOR_NONE
-  yanchor: YANCHOR_NONE
-  pivot: PIVOT_NW
+  yanchor: YANCHOR_TOP
+  pivot: PIVOT_CENTER
   outline {
     x: 1.0
     y: 1.0
@@ -121,7 +124,6 @@ nodes {
   }
   adjust_mode: ADJUST_MODE_FIT
   line_break: false
-  parent: "box"
   layer: ""
   inherit_alpha: true
   alpha: 1.0
@@ -133,8 +135,8 @@ nodes {
 }
 nodes {
   position {
-    x: 0.0
-    y: 0.0
+    x: 633.0
+    y: 325.0
     z: 0.0
     w: 1.0
   }
@@ -151,8 +153,8 @@ nodes {
     w: 1.0
   }
   size {
-    x: 200.0
-    y: 100.0
+    x: 64.0
+    y: 24.0
     z: 0.0
     w: 1.0
   }
@@ -162,27 +164,91 @@ nodes {
     z: 1.0
     w: 1.0
   }
-  type: TYPE_PIE
+  type: TYPE_BOX
   blend_mode: BLEND_MODE_ALPHA
-  texture: ""
-  id: "pie"
+  texture: "gui_textures/button_01"
+  id: "box1"
   xanchor: XANCHOR_NONE
   yanchor: YANCHOR_NONE
   pivot: PIVOT_CENTER
   adjust_mode: ADJUST_MODE_FIT
-  parent: "box"
   layer: ""
   inherit_alpha: true
-  outerBounds: PIEBOUNDS_ELLIPSE
-  innerRadius: 0.0
-  perimeterVertices: 4
-  pieFillAngle: 125.0
+  slice9 {
+    x: 3.0
+    y: 3.0
+    z: 3.0
+    w: 3.0
+  }
   clipping_mode: CLIPPING_MODE_NONE
   clipping_visible: true
   clipping_inverted: false
   alpha: 1.0
   template_node_child: false
-  size_mode: SIZE_MODE_AUTO
+  size_mode: SIZE_MODE_MANUAL
+}
+nodes {
+  position {
+    x: 0.0
+    y: 2.0
+    z: 0.0
+    w: 1.0
+  }
+  rotation {
+    x: 0.0
+    y: 0.0
+    z: 0.0
+    w: 1.0
+  }
+  scale {
+    x: 1.0
+    y: 1.0
+    z: 1.0
+    w: 1.0
+  }
+  size {
+    x: 64.0
+    y: 24.0
+    z: 0.0
+    w: 1.0
+  }
+  color {
+    x: 1.0
+    y: 1.0
+    z: 1.0
+    w: 1.0
+  }
+  type: TYPE_TEXT
+  blend_mode: BLEND_MODE_ALPHA
+  text: "play"
+  font: "default_compass"
+  id: "text"
+  xanchor: XANCHOR_NONE
+  yanchor: YANCHOR_NONE
+  pivot: PIVOT_CENTER
+  outline {
+    x: 1.0
+    y: 1.0
+    z: 1.0
+    w: 1.0
+  }
+  shadow {
+    x: 1.0
+    y: 1.0
+    z: 1.0
+    w: 1.0
+  }
+  adjust_mode: ADJUST_MODE_FIT
+  line_break: false
+  parent: "box1"
+  layer: ""
+  inherit_alpha: true
+  alpha: 1.0
+  outline_alpha: 1.0
+  shadow_alpha: 1.0
+  template_node_child: false
+  text_leading: 1.0
+  text_tracking: 0.0
 }
 material: "/builtins/materials/gui.material"
 adjust_reference: ADJUST_REFERENCE_PARENT

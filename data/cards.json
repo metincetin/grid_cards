@@ -27,7 +27,7 @@
         "name": "Heal",
         "health": 0,
         "damage": 0,
-        "image" :"ogre",
+        "image" :"heal",
         "behaviours":
         [
             {"name": "heal", "value": 5}

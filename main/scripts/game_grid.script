@@ -99,6 +99,7 @@ end
 
 function move(from_x, from_y, to_x, to_y)
 	local from_card = get_card_of_position(from_x, from_y)
+	if (from_card == nil) then return end
 	go.set(msg.url("main", from_card, "card"), "grid_position", vmath.vector3(to_x, to_y, 0))
 	cards[to_x][to_y] = from_card
 	cards[from_x][from_y] = nil
@@ -139,7 +140,7 @@ function create_card(x, y)
 
 	local grid_position = go.get_position()
 	
-	local target_position = vmath.vector3(grid_position.x + (x - 1) * 98, grid_position.y + (y - 1) * 128, 0)
+	local target_position = grid_position + calculate_target_position(x,y)
 
 	-- fx offsetting ??
 	target_position.y = target_position.y - 32
@@ -187,14 +188,21 @@ function swap(from_x, from_y, to_x, to_y)
 	
 end
 
+function calculate_target_position(x, y)
+	local card_size = vmath.vector3(101, 128,0)
+	return vmath.vector3((x - 1) * card_size.x - card_size.x * 0.5, (y - 1) * card_size.y - card_size.y * 0.5, 0) 
+end
+
 function reposition()
 	for x = 1, 3, 1
 	do
 		for y = 1, 3, 1
 		do
 			local pos = {x = x, y = y}
+
 			local grid_position = go.get_position()
-			local target_pos = vmath.vector3(grid_position.x + (x - 1) * 98, grid_position.y + (y - 1) * 128, 0)
+			
+			local target_pos = grid_position + calculate_target_position(x, y)
 			if cards[x][y] ~= nill then
 				go.animate(cards[x][y], "position", go.PLAYBACK_ONCE_FORWARD, target_pos, go.EASING_OUTCUBIC, .5)
 			end

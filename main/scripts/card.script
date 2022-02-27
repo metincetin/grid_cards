@@ -63,7 +63,7 @@ end
 
 function die(self, attacker, direction)
 	handle_behaviours(self, attacker)
-	go.animate(".", "scale", go.PLAYBACK_ONCE_FORWARD, 0, go.EASING_OUTCIRC, .7, .5, die_animation_completed)
+	go.animate(".", "scale", go.PLAYBACK_ONCE_FORWARD, 0, go.EASING_OUTCIRC, .7, 0, die_animation_completed)
 	msg.post("/game_grid", "card_died", {position = self.grid_position, direction = direction})
 end
 
@@ -75,6 +75,8 @@ function handle_behaviours(self, attacker)
 		print("Applying behaviour: " .. v.name .. " value: " .. v.value)
 		
 		if v.name == "heal" then
+			-- particle should be played on the 'attacker'
+			particlefx.play(attacker .. "/fx_container#heal")
 			msg.post(msg.url("main", attacker,"card"), "heal", {value = v.value})
 		end
 	end
