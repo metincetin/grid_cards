@@ -1,13 +1,13 @@
+
+local events = {}
+
 function init(self)
 	-- Add initialization code here
 	-- Learn more: https://defold.com/manuals/script/
 	-- Remove this function if not needed
+	msg.post(".", "acquire_input_focus")
 end
 
-function start()
-	msg.post("game_grid", "start_game")
-	msg.post("game_grid", "set_player",{x = 2, y = 2})
-end
 function final(self)
 	-- Add finalization code here
 	-- Learn more: https://defold.com/manuals/script/
@@ -21,21 +21,30 @@ function update(self, dt)
 end
 
 function on_message(self, message_id, message, sender)
-	if message_id == hash("start") then
-		start()
+	-- Add message-handling code here
+	-- Learn more: https://defold.com/manuals/message-passing/
+	-- Remove this function if not needed
+
+	if message_id == "register" then
+		table.insert(events, message.fun)
+	end
+	if message_id == "unregister" then
+		for i, f in ipairs(events) do
+			table.remove(events, i)
+		end
 	end
 end
 
 function on_input(self, action_id, action)
-	-- Add input-handling code here. The game object this script is attached to
-	-- must have acquired input focus:
-	--
-	--    msg.post(".", "acquire_input_focus")
-	--
-	-- All mapped input bindings will be received. Mouse and touch input will
-	-- be received regardless of where on the screen it happened.
-	-- Learn more: https://defold.com/manuals/input/
-	-- Remove this function if not needed
+	if action_id == hash("touch") and action.pressed then
+		local button gui.get_node("button")
+		if gui.pick_node(button, action.x, action.y) then
+			for _, fun in ipairs(events) do
+				fun()
+			end
+		end
+
+	end
 end
 
 function on_reload(self)

@@ -1,8 +1,8 @@
 [
     {
         "name": "Player",
-        "health": 20,
-        "damage": 10,
+        "health": 40,
+        "damage": 5,
         "image": "knight"
     },
     {
@@ -13,8 +13,8 @@
     },
     {
         "name": "Goblin",
-        "health": 3,
-        "damage": 5,
+        "health": 5,
+        "damage": 3,
         "image": "goblin"
     },
     {

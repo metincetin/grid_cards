@@ -8,8 +8,16 @@ function init(self)
 	msg.post(".", "acquire_input_focus")
 end
 
-cards = { {}, {}, {} }
-player = nil
+local cards = { {}, {}, {} }
+local player = nil
+local game_ended = false;
+
+function start_game()
+	game_ended = false
+
+	generate()
+	randomize()
+end
 
 function generate()
 	for x = 0, 2, 1
@@ -37,11 +45,23 @@ function handle_swipe(message)
 	end
 end
 
+function randomize()
+	for x, lines in ipairs(cards) do
+		for y, card in ipairs(lines) do
+			msg.post(card, "assign_card", game_data.get_random_card())
+		end
+	end
+end
+
 function on_message(self, message_id, message, sender)
 	if message_id == hash("generate") then
 		generate()
 		reposition()
 	end
+	if message_id == hash("start_game") then
+		start_game()
+	end
+
 	if message_id == hash("handle_swipe") then
 		handle_swipe(message)
 	end
@@ -50,14 +70,18 @@ function on_message(self, message_id, message, sender)
 		msg.post(player, "assign_card", game_data.get_card_by_name("Player"))
 	end
 	if message_id == hash("randomize") then
-		for x, lines in ipairs(cards) do
-			for y, card in ipairs(lines) do
-				msg.post(card, "assign_card", game_data.get_random_card())
-			end
-		end
+		randomize()
 	end
 	if message_id == hash("card_died") then
 		local died_position = message.position
+		local url = msg.url("main", hh, "card")
+
+		local player_position = go.get(url, "grid_position", vmath.vector3(x, y, 0))
+
+		if died_position.x == player.position.x and died_position.y == player.position.y then
+			end_game()
+			return
+		end
 
 		cards[died_position.x][died_position.y] = nil
 
@@ -73,15 +97,18 @@ function on_message(self, message_id, message, sender)
 		end
 
 		for i, v in ipairs(group) do
-
 			if is_position_available(v.x + message.direction.x, v.y + message.direction.y) then
 				move(v.x, v.y, v.x + message.direction.x, v.y + message.direction.y)
 			end
 		end
 		fill_empty()
 		reposition()
-
 	end
+end
+
+function end_game()
+	game_ended = true
+	msg.post("/gui#game", "show_game_over")
 end
 
 function move(from_x, from_y, to_x, to_y)
@@ -175,7 +202,7 @@ end
 
 function calculate_target_position(x, y)
 	local card_size = vmath.vector3(101, 128, 0)
-	return vmath.vector3((x - 1) * card_size.x - card_size.x * 0.5, (y - 1) * card_size.y - card_size.y * 0.5, 0)
+	return vmath.vector3((x - 1) * card_size.x - card_size.x, (y - 1) * card_size.y - card_size.y, 0)
 end
 
 function reposition()
@@ -216,8 +243,13 @@ end
 local mouse_pressed = false
 
 function on_input(self, action_id, action)
+	if game_ended then
+		return
+	end
+
 	if action.pressed then
 		mouse_pressed = true
+		return
 	end
 	if action.released then
 		mouse_pressed = false
@@ -229,6 +261,8 @@ function on_input(self, action_id, action)
 
 	local swipe_horizontal = math.abs(action.dx) > 10
 	local swipe_vertical = math.abs(action.dy) > 10
+
+	print("touch delta " .. action.dx .. " " .. action.dy)
 
 	if swipe_horizontal then
 		mouse_pressed = false

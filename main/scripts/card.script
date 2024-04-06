@@ -58,7 +58,9 @@ function apply_damage(self, attacker, damage, direction)
 		0.3)
 	go.animate("heart", "scale", go.PLAYBACK_ONCE_PINGPONG, vmath.vector3(2), go.EASING_OUTCIRC, 0.3)
 
-    go.animate("image#character_image", "tint", go.PLAYBACK_ONCE_PINGPONG, vmath.vector4(1, 0.0, 0.0, 1), go.EASING_INOUTQUAD, .3)
+	if (damage > 0) then
+		go.animate("image#character_image", "tint", go.PLAYBACK_ONCE_PINGPONG, vmath.vector4(1, 0.0, 0.0, 1), go.EASING_INOUTQUAD, .3)
+	end
 
 
 	if self.health <= 0 then die(self, attacker, direction) end

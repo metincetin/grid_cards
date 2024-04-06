@@ -11,8 +11,9 @@ game_binding = /input/game.input_bindingc
 use_accelerometer = 0
 
 [display]
-width = 1280
-height = 720
+width = 1920
+height = 1080
+display_profiles = /settings/main.display_profilesc
 
 [script]
 shared_state = 1

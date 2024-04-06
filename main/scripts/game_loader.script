@@ -1,9 +1,35 @@
 local game_data = require "modules.game_data"
 function init(self)
-	-- Add initialization code here
-	-- Learn more: https://defold.com/manuals/script/
-	-- Remove this function if not needed
+	-- msg.post("@render:", "use_fixed_fit_projection", { near = -20, far = 20, zoom = 4})
+	msg.post("@render:", "use_camera_projection")
+	camera.acquire_focus("/player#camera")
+
+	if sys.get_sys_info().system_name == "Android" then
+		local w,h = window.get_size()
+		local nw = h
+		local nh = w
+		window.set_size(nw, nh)
+	end
+
+
 	print("Loading cards")
 	game_data.load_cards()
 	print("Cards loaded, number = " .. table.getn(game_data.cards))
+
+
+end
+
+function update()
+	go.set("/player#camera", "orthographic_zoom", calculate_orthographic_zoom())
+end
+
+function calculate_orthographic_zoom()
+	local w,h = window.get_size()
+
+	local ref_width = 450
+	local ref_height = 960
+
+	local mul = w / ref_width
+
+	return mul
 end
