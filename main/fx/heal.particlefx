@@ -1,7 +1,7 @@
 emitters {
   id: "emitter"
   mode: PLAY_MODE_ONCE
-  duration: 0.4
+  duration: 1.0
   space: EMISSION_SPACE_EMITTER
   position {
     x: 0.0
@@ -67,7 +67,7 @@ emitters {
     key: EMITTER_KEY_PARTICLE_LIFE_TIME
     points {
       x: 0.0
-      y: 0.4
+      y: 1.0
       t_x: 1.0
       t_y: 0.0
     }
@@ -87,7 +87,7 @@ emitters {
     key: EMITTER_KEY_PARTICLE_SIZE
     points {
       x: 0.0
-      y: 10.0
+      y: 20.0
       t_x: 1.0
       t_y: 0.0
     }
@@ -220,4 +220,9 @@ emitters {
   duration_spread: 0.0
   stretch_with_velocity: false
   start_offset: 0.0
+  pivot {
+    x: 0.0
+    y: 0.0
+    z: 0.0
+  }
 }

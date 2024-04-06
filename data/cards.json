@@ -19,7 +19,7 @@
     },
     {
         "name": "Ogre",
-        "health": 3,
+        "health": 20,
         "damage": 5,
         "image": "ogre"
     },

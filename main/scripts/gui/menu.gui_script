@@ -20,7 +20,6 @@ function update(self, dt)
 	-- Learn more: https://defold.com/manuals/script/
 	-- Remove this function if not needed
 
-	print("HI")
 end
 
 function on_message(self, message_id, message, sender)

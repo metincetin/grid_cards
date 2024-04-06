@@ -1,7 +1,7 @@
 local pick = require "modules.pick"
 local game_data = require "modules.game_data"
 
-go.property("grid_position", vmath.vector3(0,0,0))
+go.property("grid_position", vmath.vector3(0, 0, 0))
 go.property("damage", 0)
 
 function assign_card(self, c)
@@ -17,7 +17,7 @@ function init(self)
 	-- Learn more: https://defold.com/manuals/script/
 	-- Remove this function if not needed
 	self.health = 0
-	self.position = {x = 0, y = 0}
+	self.position = { x = 0, y = 0 }
 	msg.post(".", "acquire_input_focus")
 	self.card = {}
 end
@@ -26,8 +26,8 @@ local card = {}
 
 function update_visuals(self)
 	label.set_text("#name", self.card.name)
-	msg.post("image#character_image", "play_animation", {id = hash(self.card.image)})
-	msg.post("heart#health_display", "update_label", {self.health})
+	msg.post("image#character_image", "play_animation", { id = hash(self.card.image) })
+	msg.post("heart#health_display", "update_label", { self.health })
 	label.set_text("damage#label", self.card.damage)
 end
 
@@ -36,10 +36,11 @@ selected = 0
 function on_message(self, message_id, message, sender)
 	if message_id == hash("heal") then
 		self.health = self.health + message.value
+		particlefx.play("fx_container#heal")
 		update_visuals(self)
 	end
 	if message_id == hash("assign_card") then
-		assign_card(self,message)
+		assign_card(self, message)
 	end
 
 	if message_id == hash("apply_damage") then
@@ -53,44 +54,39 @@ end
 function apply_damage(self, attacker, damage, direction)
 	self.health = self.health - damage
 
-	go.animate("heart", "position.y", go.PLAYBACK_ONCE_PINGPONG, go.get("heart", "position.y") + 12, go.EASING_OUTCIRC, 0.3)
+	go.animate("heart", "position.y", go.PLAYBACK_ONCE_PINGPONG, go.get("heart", "position.y") + 12, go.EASING_OUTCIRC,
+		0.3)
 	go.animate("heart", "scale", go.PLAYBACK_ONCE_PINGPONG, vmath.vector3(2), go.EASING_OUTCIRC, 0.3)
 
+    go.animate("image#character_image", "tint", go.PLAYBACK_ONCE_PINGPONG, vmath.vector4(1, 0.0, 0.0, 1), go.EASING_INOUTQUAD, .3)
+
+
 	if self.health <= 0 then die(self, attacker, direction) end
-	
+
 	update_visuals(self)
 end
 
 function die(self, attacker, direction)
 	handle_behaviours(self, attacker)
 	go.animate(".", "scale", go.PLAYBACK_ONCE_FORWARD, 0, go.EASING_OUTCIRC, .7, 0, die_animation_completed)
-	msg.post("/game_grid", "card_died", {position = self.grid_position, direction = direction})
+	msg.post("/game_grid", "card_died", { position = self.grid_position, direction = direction })
 end
 
 function handle_behaviours(self, attacker)
-	print("Attacker:")
-	pprint(attacker)
 	if self.card.behaviours == nil then return end
 	for i, v in ipairs(self.card.behaviours) do
-		print("Applying behaviour: " .. v.name .. " value: " .. v.value)
-		
 		if v.name == "heal" then
 			-- particle should be played on the 'attacker'
-			particlefx.play(attacker .. "/fx_container#heal")
-			msg.post(msg.url("main", attacker,"card"), "heal", {value = v.value})
+			-- particlefx.play(msg.url(attacker, "fx_container", heal))
+			msg.post(msg.url("main", attacker, "card"), "heal", { value = v.value })
 		end
 	end
 end
 
 function die_animation_completed(self)
-	print("Removed!")
 end
 
 function on_input(self, action_id, action)
 	if action_id == hash("touch") then
-		if action.pressed then	
-		end
-
 	end
-	
 end
