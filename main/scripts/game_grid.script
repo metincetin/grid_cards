@@ -12,6 +12,12 @@ local cards = { {}, {}, {} }
 local player = nil
 local game_ended = false;
 
+local stats = {
+	killed = 0,
+	damage_dealt = 0,
+	score = 0
+}
+
 function start_game()
 	game_ended = false
 
@@ -74,11 +80,12 @@ function on_message(self, message_id, message, sender)
 	end
 	if message_id == hash("card_died") then
 		local died_position = message.position
-		local url = msg.url("main", hh, "card")
+		
+		local died_card = cards[died_position.x][died_position.y]
+		local url = msg.url("main", died_card, "card")
 
-		local player_position = go.get(url, "grid_position", vmath.vector3(x, y, 0))
-
-		if died_position.x == player.position.x and died_position.y == player.position.y then
+		if message.card.name == "Player" then
+			print("YOU LOSE")
 			end_game()
 			return
 		end
@@ -108,7 +115,7 @@ end
 
 function end_game()
 	game_ended = true
-	msg.post("/gui#game", "show_game_over")
+	msg.post("/gui#popups", "show_popup", { popup = "game_over", data = stats })
 end
 
 function move(from_x, from_y, to_x, to_y)

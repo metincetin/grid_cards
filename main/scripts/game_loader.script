@@ -16,11 +16,10 @@ function init(self)
 	game_data.load_cards()
 	print("Cards loaded, number = " .. table.getn(game_data.cards))
 
-
 end
 
 function update()
-	go.set("/player#camera", "orthographic_zoom", calculate_orthographic_zoom())
+	-- go.set("/player#camera", "orthographic_zoom", calculate_orthographic_zoom())
 end
 
 function calculate_orthographic_zoom()

@@ -158,7 +158,7 @@ embedded_instances {
   "far_z: 20.0\\n"
   "auto_aspect_ratio: 1\\n"
   "orthographic_projection: 1\\n"
-  "orthographic_zoom: 4.5\\n"
+  "orthographic_zoom: 2.0\\n"
   "\"\n"
   "  position {\n"
   "    x: 0.0\n"
@@ -210,7 +210,7 @@ embedded_instances {
   "  }\n"
   "}\n"
   "components {\n"
-  "  id: \"game\"\n"
+  "  id: \"popups\"\n"
   "  component: \"/main/gui/templates/popups.gui\"\n"
   "  position {\n"
   "    x: 0.0\n"
@@ -239,8 +239,8 @@ embedded_instances {
     w: 1.0
   }
   scale3 {
-    x: 1.0
-    y: 1.0
-    z: 1.0
+    x: 10.0
+    y: 10.0
+    z: 10.0
   }
 }

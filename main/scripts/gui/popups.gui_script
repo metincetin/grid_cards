@@ -1,0 +1,62 @@
+function init(self)
+	-- Add initialization code here
+	-- Learn more: https://defold.com/manuals/script/
+	-- Remove this function if not needed
+end
+
+function final(self)
+	-- Add finalization code here
+	-- Learn more: https://defold.com/manuals/script/
+	-- Remove this function if not needed
+end
+
+function update(self, dt)
+	-- Add update code here
+	-- Learn more: https://defold.com/manuals/script/
+	-- Remove this function if not needed
+end
+
+function on_message(self, message_id, message, sender)
+	if message_id == hash("show_popup") then
+		toggle_popup(message.popup, true)
+	end
+
+	if message_id == hash("hide_popup") then
+		toggle_popup(message.popup, false)
+	end
+end
+
+function play_open_animation(popup)
+	gui.animate(popup, "scale", go.PLAYBACK_ONCE_FORWARD, 1, go.EASING_OUTBACK, .4)
+
+
+	gui.set_position(popup, vmath.vector3(0, -200, 0))
+	gui.set_alpha(popup, 0)
+
+	gui.animate(popup, "position.y", 0, gui.EASING_OUTBACK, 0.4)
+	gui.animate(popup, "color.w",  1, gui.EASING_OUTSINE, 0.2)
+end
+
+function toggle_popup(popup, enabled)
+	local p = gui.get_node(popup)
+	gui.set_enabled(p, enabled)
+	play_open_animation(p)
+end
+
+function on_input(self, action_id, action)
+	-- Add input-handling code here. The game object this script is attached to
+	-- must have acquired input focus:
+	--
+	--    msg.post(".", "acquire_input_focus")
+	--
+	-- All mapped input bindings will be received. Mouse and touch input will
+	-- be received regardless of where on the screen it happened.
+	-- Learn more: https://defold.com/manuals/input/
+	-- Remove this function if not needed
+end
+
+function on_reload(self)
+	-- Add reload-handling code here
+	-- Learn more: https://defold.com/manuals/hot-reload/
+	-- Remove this function if not needed
+end

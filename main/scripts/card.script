@@ -69,9 +69,11 @@ function apply_damage(self, attacker, damage, direction)
 end
 
 function die(self, attacker, direction)
+	print("card died")
+	pprint(self.card)
 	handle_behaviours(self, attacker)
 	go.animate(".", "scale", go.PLAYBACK_ONCE_FORWARD, 0, go.EASING_OUTCIRC, .7, 0, die_animation_completed)
-	msg.post("/game_grid", "card_died", { position = self.grid_position, direction = direction })
+	msg.post("/game_grid", "card_died", { card = self.card, position = self.grid_position, direction = direction })
 end
 
 function handle_behaviours(self, attacker)
